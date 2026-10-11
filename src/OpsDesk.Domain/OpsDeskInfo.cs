@@ -3,5 +3,5 @@ namespace OpsDesk.Domain;
 public static class OpsDeskInfo
 {
     public const string Name = "OpsDesk";
-    public const string Versao = "0.1.0";
+    public const string Version = "0.1.0";
 }
