@@ -7,10 +7,10 @@ public class Ticket
     public TicketPriority Priority { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
     public Guid? AssetId { get; private set; }
-    public TicketStatus Status { get; set; }
+    public TicketStatus Status { get; private set; }
     public DateTimeOffset? ResolvedAt { get; private set; }
 
-    public Ticket (string title, string description, TicketPriority priority, Guid? assetId)
+    public Ticket (string title, string description, TicketPriority priority, Guid? assetId = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(title);
         ArgumentException.ThrowIfNullOrWhiteSpace(description);
@@ -21,13 +21,14 @@ public class Ticket
         Priority = priority;
         CreatedAt = DateTimeOffset.UtcNow;
         Status = TicketStatus.Open;     
+        AssetId = assetId;
 
     }
 
     public void Start()
     {
         if (Status != TicketStatus.Open)
-            throw new InvalidOperationException("Ticket is not opened.");
+            throw new InvalidOperationException($"Cannot start a ticket in status {Status}.");
 
         Status = TicketStatus.InProgress;
     }

@@ -15,8 +15,22 @@ try
 {
     new Asset("PT-0003","XX-XXX01",AssetType.Printer,new DateOnly(2023,05,15), -85000 );
 }
-catch (Exception err)
+catch (ArgumentOutOfRangeException err)
 {
+    Console.WriteLine(err.Message);
+}
+
+
+try
+{
+    assets[0].SetWarranty(new DateOnly(2027,05,15));
+    assets[1].SetWarranty(new DateOnly(2026,05,15));
+    assets[2].SetWarranty(new DateOnly(2000,05,15));
+
+}
+catch (ArgumentException err)
+{
+    
     Console.WriteLine(err.Message);
 }
 
@@ -44,7 +58,7 @@ try
 {
     ticket.Start();
 }
-catch (Exception err)
+catch (InvalidOperationException err)
 {
     Console.WriteLine(err.Message);
 }

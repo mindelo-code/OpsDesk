@@ -27,16 +27,14 @@ public class Asset
 
     public void SetWarranty (DateOnly end)
     {
-        if (end <= PurchaseDate)
+        if (end < PurchaseDate)
             throw new ArgumentException("Warranty cannot end before purchase date.", nameof(end));
         
         WarrantyEnd = end;
     }
 
-    public void SetNotes (string notes)
+    public void SetNotes (string? notes)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(notes);
-        
         Notes = notes;
     }
 
