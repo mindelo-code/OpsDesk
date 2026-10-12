@@ -3,11 +3,22 @@
 Console.WriteLine($"{OpsDeskInfo.Name} v{OpsDeskInfo.Version}");
 
 var assets = new List<Asset>();
-assets.Add(new Asset{Id= Guid.NewGuid(), Tag ="PT-0001", Name = "NB-INF01", Type=AssetType.Laptop, PurchaseDate = new DateOnly(2023,05,15), WarrantyEnd = new DateOnly(2027,05,15), PurchasePrice = 85000, Notes = "Used by IT" });
 
-assets.Add(new Asset{Id= Guid.NewGuid(), Tag ="PT-0002", Name = "PC-FIN01", Type=AssetType.Laptop, PurchaseDate = new DateOnly(2023,05,15), WarrantyEnd = new DateOnly(2026,05,15), PurchasePrice = 85000, Notes = "Used by IT" });
+assets.Add(new Asset("PT-0001", "NB-INF01", AssetType.Laptop, new DateOnly(2023,05,15), 85000 ));
 
-assets.Add(new Asset{Id= Guid.NewGuid(), Tag ="PT-0003", Name = "PR-ESQ01", Type=AssetType.Printer, PurchaseDate = new DateOnly(2023,05,15), PurchasePrice = 85000, Notes = "Used in the MJSV Open Space" });
+assets.Add(new Asset("PT-0002","PC-FIN01",AssetType.Laptop, new DateOnly(2023,05,15), 85000 ));
+
+assets.Add(new Asset("PT-0003","PR-ESQ01",AssetType.Printer,new DateOnly(2023,05,15), 85000 ));
+
+
+try
+{
+    new Asset("PT-0003","XX-XXX01",AssetType.Printer,new DateOnly(2023,05,15), -85000 );
+}
+catch (Exception err)
+{
+    Console.WriteLine(err.Message);
+}
 
 foreach (var asset in assets)
 {
@@ -16,6 +27,24 @@ foreach (var asset in assets)
 
 Guid assetId = assets[2].Id;
 
-var ticket = new Ticket {Id = Guid.NewGuid(), AssetId= assetId, CreatedAt=DateTimeOffset.UtcNow, Description="Printer is offline", Priority=TicketPriority.High, Title="Printer"};
+var ticket = new Ticket ("Printer", "Printer is offline", TicketPriority.High, assetId);
 
-Console.WriteLine($"Ticket Title:{ticket.Title}, Description:{ticket.Description} Priority:{ticket.Priority} Asset:{ticket.AssetId} CreatAt:{ticket.CreatedAt}");
+Console.WriteLine($"Ticket Title:{ticket.Title}, Description:{ticket.Description} Priority:{ticket.Priority} Asset:{ticket.AssetId} CreatedAt:{ticket.CreatedAt}");
+
+ticket.Start();
+Console.WriteLine($"Status: {ticket.Status}");
+
+ticket.Resolve();
+Console.WriteLine($"Status: {ticket.Status}");
+
+ticket.Close();
+Console.WriteLine($"Status: {ticket.Status}");
+
+try
+{
+    ticket.Start();
+}
+catch (Exception err)
+{
+    Console.WriteLine(err.Message);
+}
